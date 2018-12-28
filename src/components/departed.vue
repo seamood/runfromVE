@@ -1,9 +1,9 @@
 <template>
-  <el-container class="box">
-    <el-tree :data="data5" @node-expand="reload" @node-click="handleNodeClick">
-      <span class="custom-tree-node" slot-scope="{node, data}">
+  <el-container class='box'>
+    <el-tree :data='data5' @node-expand='reload' @node-click='handleNodeClick'>
+      <span class='custom-tree-node' slot-scope='{node, data}'>
         <span>
-          <i :class="data.iconCls"></i>
+          <i :class='data.iconCls'></i>
           {{node.label}}
         </span>
       </span>
@@ -11,88 +11,88 @@
   </el-container>
 </template>
 <script>
-import tree1 from "./tree";
+import tree1 from './tree'
 import { jsajx } from '../url/jsajx'
 export default {
   components: {
-    "v-tree": tree1
+    'v-tree': tree1
   },
-  data() {
+  data () {
     return {
-      data5: "",
+      data5: '',
       departed: {
-        id: "",
-        name: ""
+        id: '',
+        name: ''
       }
-    };
+    }
   },
-  mounted() {
-    // this.getDepartment(0);
+  mounted () {
+    // this.getDepartment(0)
   },
   methods: {
-    reload(data) {
-      const id = data.id || "";
-    //   this.getDepartment(id, data);
+    reload (data) {
+      const id = data.id || ''
+      this.getDepartment(id, data)
     },
-    handleNodeClick(data) {
-      this.departed.id = data.id || "";
-      this.departed.name = data.label || "";
-      this.$emit("clickRow", this.departed);
+    handleNodeClick (data) {
+      this.departed.id = data.id || ''
+      this.departed.name = data.label || ''
+      this.$emit('clickRow', this.departed)
     },
-    getDepartment(id, indexData) {
+    getDepartment (id, indexData) {
       // 获取部门列表
       let paramData = {
         pid: id
-      };
-      paramData = JSON.stringify(paramData);
+      }
+      paramData = JSON.stringify(paramData)
       jsajx(
         '',
-        "post",
-        "/admin/department/getdepartmenttreedata.json",
+        'post',
+        '/admin/department/getdepartmenttreedata.json',
         paramData,
         res => {
-          res = JSON.parse(res);
-          const data = res.data || [];
+          res = JSON.parse(res)
+          const data = res.data || []
           if (res.status === 200) {
             if (data && data.length > 0) {
               data.forEach(i => {
                 if (!i.children && i.hasChildren > 0) {
-                  this.$set(i, "children", [{ iconCls: "el-icon-loading" }]);
+                  this.$set(i, 'children', [{ iconCls: 'el-icon-loading' }])
                 }
-              });
-              // console.log(data);
+              })
+              // console.log(data)
               switch (id) {
                 case 0:
-                  this.data5 = res.data;
-                  break;
+                  this.data5 = res.data
+                  break
                 default:
                   if (indexData) {
-                    const newChild = res.data || [];
+                    const newChild = res.data || []
                     if (!indexData.children) {
-                      this.$set(indexData, "children", newChild);
+                      this.$set(indexData, 'children', newChild)
                     } else {
-                      indexData.children = newChild;
+                      indexData.children = newChild
                     }
                   }
               }
             } else {
               this.$message({
-                title: "错误",
-                message: "暂无数据",
-                type: "warning"
-              });
+                title: '错误',
+                message: '暂无数据',
+                type: 'warning'
+              })
             }
           } else {
             this.$message.error({
-              title: "错误",
-              message: res.msg || "获取数据失败"
-            });
+              title: '错误',
+              message: res.msg || '获取数据失败'
+            })
           }
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 <style scoped>
 .custom-tree-node {

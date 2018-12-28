@@ -1,13 +1,11 @@
 <template>
   <div>
-    <!-- <p>1234</p> -->
-    <v-from :inintData='inintForm'></v-from>
-    <!-- <v-from></v-from> -->
+    <v-from :inintData='inintForm' v-on:submitForm='submitForm'></v-from>
   </div>
 </template>
 <script>
 import vfrom from './from'
-import { jsajx } from '../url/jsajx'
+// import { jsajx } from '../url/jsajx'
 export default {
   components: {
     'v-from': vfrom
@@ -35,7 +33,7 @@ export default {
           },
           {
             type: 'input',
-            paramter: 'name',
+            paramter: 'phone',
             name: '电话：',
             value: '',
             placrholder: '请输入...',
@@ -50,7 +48,7 @@ export default {
           },
           {
             type: 'upImg',
-            paramter: 'name',
+            paramter: 'file',
             name: '头像：',
             value: '',
             file: '',
@@ -60,7 +58,7 @@ export default {
           },
           {
             type: 'input',
-            paramter: 'name',
+            paramter: 'pass',
             name: '密码：',
             value: '',
             placrholder: '请输入...',
@@ -68,35 +66,35 @@ export default {
               { required: true, message: '此处不能为空', trigger: 'blur' }
             ]
           },
-          {
-            type: 'select',
-            multiple: true,
-            paramter: 'name',
-            name: '角色：',
-            value: [],
-            option: [],
-            rules: [
-              {
-                type: 'array',
-                required: true,
-                message: '此处不能为空',
-                trigger: 'change'
-              }
-            ]
-          },
-          {
-            type: 'treeSelect',
-            paramter: 'name',
-            name: '部门：',
-            value: '',
-            option: [],
-            rules: [
-              { required: true, message: '此处不能为空', trigger: 'blur' }
-            ]
-          },
+          // {
+          //   type: 'select',
+          //   multiple: true,
+          //   paramter: 'name',
+          //   name: '角色：',
+          //   value: [],
+          //   option: [],
+          //   rules: [
+          //     {
+          //       type: 'array',
+          //       required: true,
+          //       message: '此处不能为空',
+          //       trigger: 'change'
+          //     }
+          //   ]
+          // },
+          // {
+          //   type: 'treeSelect',
+          //   paramter: 'name',
+          //   name: '部门：',
+          //   value: '',
+          //   option: [],
+          //   rules: [
+          //     { required: true, message: '此处不能为空', trigger: 'blur' }
+          //   ]
+          // },
           {
             type: 'slideButton',
-            parameter: 'name',
+            paramter: 'isIf',
             name: '是否启用',
             value: true
           }
@@ -112,6 +110,11 @@ export default {
     //   })
     //   this.inintForm.fromData[4].option = res.data || []
     // })
+  },
+  methods: {
+    submitForm (data) {
+      console.log(data)
+    }
   }
 }
 </script>

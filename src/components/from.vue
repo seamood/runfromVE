@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form ref="inintData" :model="inintData" v-if="true" label-width="100px">
+    <el-form ref='inintData' :model="inintData" v-if="true" label-width="100px">
       <div v-for="(item, index) of inintData.fromData" :key="index">
         <el-form-item :label="item.name" :prop="'fromData.' + index + '.value'" :rules="item.rules">
           <div v-if="item.type == 'input'">
@@ -62,69 +62,69 @@
 <script>
 import vdeparted from './departed'
 export default {
-  props:['inintData'],
+  props: ['inintData'],
   components: {
     'v-departed': vdeparted
   },
-  data() {
+  data () {
     return {
       from: {
         fromData: [
           { 
-            type: "input",
+            type: 'input',
             parameter: 'name',
-            name: "电话号码：",
-            value: "",
-            placeholder: "请输入...",
+            name: '电话号码：',
+            value: '',
+            placeholder: '请输入...',
             rules: [
-              { required: true, message: "请输入电话号码", trigger: "blur" }
+              { required: true, message: '请输入电话号码', trigger: 'blur' }
             ]
           },
           {
-            type: "select",
+            type: 'select',
             parameter: 'name',
-            name: "下拉框",
-            value: "",
-            placeholder: "请选择...",
+            name: '下拉框',
+            value: '',
+            placeholder: '请选择...',
             option: [
-              { name: "select1", value: "1" },
-              { name: "select2", value: "2" },
-              { name: "select3", value: "3" }
+              { name: 'select1', value: '1' },
+              { name: 'select2', value: '2' },
+              { name: 'select3', value: '3' }
             ]
           },
           {
-            type: "slideButton",
+            type: 'slideButton',
             parameter: 'name',
-            name: "按钮一",
+            name: '按钮一',
             value: true
           },
           {
-            type: "checkbox",
+            type: 'checkbox',
             parameter: 'name',
-            name: "复选框",
-            btnType: "city",
+            name: '复选框',
+            btnType: 'city',
             value: [],
-            option: ["cheked1", "cheked2", "cheked3"]
+            option: ['cheked1', 'cheked2', 'cheked3']
           },
           {
-            type: "radio",
+            type: 'radio',
             parameter: 'name',
-            name: "单选框",
-            btnType: "name",
+            name: '单选框',
+            btnType: 'name',
             value: [],
-            option: ["备选一", "备选二", "备选三"]
+            option: ['备选一', '备选二', '备选三']
           },
           {
-            type: "textread",
+            type: 'textread',
             parameter: 'name',
-            name: "多选文本框",
-            value: ""
+            name: '多选文本框',
+            value: ''
           },
           {
             type: 'upImg',
             parameter: 'name',
             name: '图片上传',
-            file: "",
+            file: '',
             value: ''
           },
           {
@@ -136,14 +136,14 @@ export default {
           }
         ]
       }
-    };
+    }
   },
   mounted () {
-      this.from.fromData = this.inintData || this.from.fromData
+    this.from = this.inintData || this.from.fromData
   },
   methods: {
     //   获取图片的内容
-    upimg (data,param) {
+    upimg (data, param) {
       const file = data.target.files[0]
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/gif'
       const isLt2M = file.size / 1024 / 1024 < 2
@@ -151,35 +151,52 @@ export default {
       param.file = file
     },
     // 下拉树的值
-    clickRow (data,param) {
-      console.log(data, param);
+    clickRow (data, param) {
+      // console.log(data, param)
       param.value = data
     },
-    submitForm(formName) {
+    submitForm (formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$emit('submitForm', this.inintData)
-          console.log(this.inintData)
+          const data = this.formatting(this.from.fromData)
+          this.$emit('submitForm', data)
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!')
+          return false
         }
-      });
+      })
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    //   console.log(this.from.fromData)
-    // console.log(this.inintData)
+    resetForm (formName) {
+      // this.$refs[formName].resetFields()
+      console.log(this.from)
+      // console.log(this.inintData)
+    },
+    formatting (formName) {
+      var json = {}
+      formName.forEach(element => {
+        if (Array.isArray(element.value)) {
+          json[element.paramter] = element.value.join(',')
+        } else {
+          if (element.type === "upImg") {
+            json[element.paramter] = element.file
+          } else {
+            json[element.paramter] = element.value
+          }
+        }
+      })
+      json = JSON.stringify(json)
+      console.log(json)
+      return json
     }
   }
-};
+}
 </script>
 <style scoped>
 .el-form-item {
   margin-bottom: 22px !important;
 }
 .imgstyle{
-  width: 1rem;
+  width: 3rem;
   /* vertical-align: middle; */
 }
 .emptybox{
