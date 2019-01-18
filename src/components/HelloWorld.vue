@@ -5,7 +5,6 @@
 </template>
 <script>
 import vfrom from './from'
-// import { jsajx } from '../url/jsajx'
 export default {
   components: {
     'v-from': vfrom
